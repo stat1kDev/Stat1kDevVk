@@ -1,21 +1,22 @@
-package com.example.stat1kdevvk;
+package com.example.stat1kdevvk.ui.activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.example.stat1kdevvk.CurrentUser;
+import com.example.stat1kdevvk.R;
 import com.example.stat1kdevvk.consts.ApiConstants;
 import com.example.stat1kdevvk.mvp.presenter.MainPresenter;
 import com.example.stat1kdevvk.mvp.view.MainView;
+import com.example.stat1kdevvk.ui.fragment.NewsFeedFragment;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKError;
 
-public class MainActivity extends MvpAppCompatActivity implements MainView {
+public class MainActivity extends BaseActivity implements MainView {
 
     @InjectPresenter
     MainPresenter mPresenter;
@@ -23,9 +24,13 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
         mPresenter.checkAuth();
+    }
+
+    @Override
+    protected int getMainContentLayout() {
+        return R.layout.activity_main;
     }
 
     @Override
@@ -33,12 +38,13 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
             @Override
             public void onResult(VKAccessToken res) {
-            // Пользователь успешно авторизовался
+                // Пользователь успешно авторизовался
                 mPresenter.checkAuth();
             }
+
             @Override
             public void onError(VKError error) {
-            // Произошла ошибка авторизации (например, пользователь запретил авторизацию)
+                // Произошла ошибка авторизации (например, пользователь запретил авторизацию)
             }
         })) {
             super.onActivityResult(requestCode, resultCode, data);
@@ -53,5 +59,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     @Override
     public void signedIn() {
         Toast.makeText(this, "Current user id: " + CurrentUser.getId(), Toast.LENGTH_LONG).show();
+        setContent(new NewsFeedFragment());
     }
 }
