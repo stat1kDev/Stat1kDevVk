@@ -6,21 +6,24 @@ import android.support.v7.widget.Toolbar;
 import android.widget.FrameLayout;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
+import com.example.stat1kdevvk.MyApplication;
 import com.example.stat1kdevvk.R;
 import com.example.stat1kdevvk.common.manager.MyFragmentManager;
 import com.example.stat1kdevvk.ui.fragment.BaseFragment;
 
+import javax.inject.Inject;
+
 public abstract class BaseActivity extends MvpAppCompatActivity {
 
+    @Inject
     MyFragmentManager myFragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MyApplication.getsApplicationComponent().inject(this);
 
         setContentView(R.layout.activity_base);
-
-        myFragmentManager = new MyFragmentManager();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

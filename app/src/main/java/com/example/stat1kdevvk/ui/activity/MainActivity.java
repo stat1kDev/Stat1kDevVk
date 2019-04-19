@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.example.stat1kdevvk.CurrentUser;
+import com.example.stat1kdevvk.MyApplication;
 import com.example.stat1kdevvk.R;
 import com.example.stat1kdevvk.consts.ApiConstants;
 import com.example.stat1kdevvk.mvp.presenter.MainPresenter;
@@ -24,6 +25,7 @@ public class MainActivity extends BaseActivity implements MainView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MyApplication.getsApplicationComponent().inject(this);
 
         mPresenter.checkAuth();
     }
